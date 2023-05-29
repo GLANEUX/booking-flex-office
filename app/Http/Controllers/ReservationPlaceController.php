@@ -25,7 +25,9 @@ class ReservationPlaceController extends Controller
 
     public function selectplace(){
         $places = DB::table('place')
-                ->select('*') 
+                ->select('place.idplace','place.numplace','place.numetage','reservation.matin','reservation.apresMidi','reservation.date')
+                ->leftJoin('reservation','place.idplace','=','reservation.id_place')
+                ->orderBy('place.idplace')
                 ->get();  
             
         $reservations = DB::table('reservation')

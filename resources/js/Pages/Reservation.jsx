@@ -18,6 +18,7 @@ export default function Reservation(props) {
     // places.map(place => console.log(place.numplace));
 
     const [horairerecup, setHoraireRecup] = useState("");
+    const [horaire, setHoraire] = useState("");
     const [etagerecup, setEtagerecup] = useState("1");
     const [placerecup, setPlaceRecup] = useState("");
     const [selectedPlaceId, setSelectedPlaceId] = useState(null);
@@ -35,6 +36,8 @@ export default function Reservation(props) {
     const horaireChange = (event) => {
         const choice = event.target.value;
         setHoraireRecup(choice);
+        setHoraire(event.target.id);
+        console.log(event.target);
     };
 
     // permet de gérer le clic sur le bouton de la journée
@@ -42,6 +45,7 @@ export default function Reservation(props) {
     const handleJourneeClick = (event) => {
         const choice = event.target.value;
         setHoraireRecup(choice);
+        console.log(choice);
         setData((prevState) => ({
             ...prevState,
             matin: true,
@@ -72,7 +76,7 @@ export default function Reservation(props) {
         const { name, value, type, checked } = e.target;
         setData((prevState) => ({
             ...prevState,
-            [name]: type === "checkbox" ? checked : value,
+            [name]: type === "radio" ? checked : value,
             id_place: selectedPlaceId,
         }));
     };
@@ -128,9 +132,8 @@ export default function Reservation(props) {
                                         <div class="flex items-center pl-3">
                                             <input
                                                 id="matin"
-                                                name="matin"
-                                                type="checkbox"
-                                                checked={data.matin}
+                                                name="horaire"
+                                                type="radio"
                                                 onChange={handleChange}
                                                 onClick={horaireChange}
                                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
@@ -147,9 +150,8 @@ export default function Reservation(props) {
                                         <div class="flex items-center pl-3">
                                             <input
                                                 id="apresmidi"
-                                                name="apresmidi"
-                                                type="checkbox"
-                                                checked={data.apresmidi}
+                                                name="horaire"
+                                                type="radio"
                                                 onChange={handleChange}
                                                 onClick={horaireChange}
                                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
@@ -166,8 +168,9 @@ export default function Reservation(props) {
                                         <div class="flex items-center pl-3">
                                             <input
                                                 id="journee"
-                                                type="checkbox"
+                                                type="radio"
                                                 value="journee"
+                                                name="horaire"
                                                 onClick={handleJourneeClick}
                                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                                             />
@@ -240,8 +243,18 @@ export default function Reservation(props) {
                                                         colorPlace={
                                                             reservations.some(
                                                                 (reservation) =>
-                                                                    reservation.id_place ===
-                                                                    place.idplace
+                                                                    (reservation.id_place ===
+                                                                        place.idplace &&
+                                                                        horaire ==
+                                                                            "matin" &&
+                                                                        place.matin ==
+                                                                            true) ||
+                                                                    (reservation.id_place ===
+                                                                        place.idplace &&
+                                                                        horaire ==
+                                                                            "apresmidi" &&
+                                                                        place.apresMidi ==
+                                                                            true)
                                                             )
                                                                 ? "grey"
                                                                 : ""
