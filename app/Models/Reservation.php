@@ -13,11 +13,14 @@ use Illuminate\Database\Eloquent\Model;
  * Class Reservation
  * 
  * @property int $idreservation
- * @property bool $matin
- * @property bool $apresMidi
  * @property Carbon $date
  * @property int $id_user
  * @property int $id_place
+ * @property bool $h1
+ * @property bool $h2
+ * @property bool $h3
+ * @property bool $h4
+ * @property bool $journee
  * 
  * @property Place $place
  * @property User $user
@@ -31,22 +34,25 @@ class Reservation extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'matin' => 'bool',
-		'apresMidi' => 'bool',
+		'date' => 'datetime',
 		'id_user' => 'int',
-		'id_place' => 'int'
-	];
-
-	protected $dates = [
-		'date'
+		'id_place' => 'int',
+		'h1' => 'bool',
+		'h2' => 'bool',
+		'h3' => 'bool',
+		'h4' => 'bool',
+		'journee' => 'bool'
 	];
 
 	protected $fillable = [
-		'matin',
-		'apresMidi',
 		'date',
 		'id_user',
-		'id_place'
+		'id_place',
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'journee'
 	];
 
 	public function place()

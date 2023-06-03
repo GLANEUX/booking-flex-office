@@ -27,8 +27,11 @@ export default function Reservation(props) {
     // et de les initialiser avec des valeurs par défaut
     const [data, setData] = useState({
         date: new Date().toISOString().substring(0, 10),
-        matin: false,
-        apresmidi: false,
+        h1:'',
+        h2: '',
+        h3: '',
+        h4: '',
+        journee: '',
         id_place: selectedPlaceId,
     });
 
@@ -36,22 +39,10 @@ export default function Reservation(props) {
     const horaireChange = (event) => {
         const choice = event.target.value;
         setHoraireRecup(choice);
-        setHoraire(event.target.id);
-        console.log(event.target);
+        setHoraire(event.target.value);
+        console.log(event.target.value);
     };
 
-    // permet de gérer le clic sur le bouton de la journée
-    // et de mettre à jour les valeurs de matin et apresmidi
-    const handleJourneeClick = (event) => {
-        const choice = event.target.value;
-        setHoraireRecup(choice);
-        console.log(choice);
-        setData((prevState) => ({
-            ...prevState,
-            matin: true,
-            apresmidi: true,
-        }));
-    };
 
     // permet de gérer le changement de l'étage
     const etageChange = (event) => {
@@ -76,8 +67,11 @@ export default function Reservation(props) {
         const { name, value, type, checked } = e.target;
         setData((prevState) => ({
             ...prevState,
-            [name]: type === "radio" ? checked : value,
             id_place: selectedPlaceId,
+            h1: value,
+            h2: value,
+            h3: value,
+            h4: value,
         }));
     };
 
@@ -127,62 +121,18 @@ export default function Reservation(props) {
                                 <div className="mb-2 text-sm font-medium text-gray-500 uppercase tracking-wide pt-5">
                                     Horaires
                                 </div>
-                                <ul class="items-center w-full text-sm font-medium text-red-900 bg-white border border-gray-200 rounded-lg sm:flex">
-                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
-                                        <div class="flex items-center pl-3">
-                                            <input
-                                                id="matin"
-                                                name="horaire"
-                                                type="radio"
-                                                onChange={handleChange}
-                                                onClick={horaireChange}
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
-                                            />
-                                            <label
-                                                for="matin"
-                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
-                                            >
-                                                Matin
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
-                                        <div class="flex items-center pl-3">
-                                            <input
-                                                id="apresmidi"
-                                                name="horaire"
-                                                type="radio"
-                                                onChange={handleChange}
-                                                onClick={horaireChange}
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
-                                            />
-                                            <label
-                                                for="apresmidi"
-                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
-                                            >
-                                                Après-midi
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li class="w-full dark:border-gray-900">
-                                        <div class="flex items-center pl-3">
-                                            <input
-                                                id="journee"
-                                                type="radio"
-                                                value="journee"
-                                                name="horaire"
-                                                onClick={handleJourneeClick}
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                            />
-                                            <label
-                                                for="journee"
-                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
-                                            >
-                                                Journée
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <select
+                                    className="w-full py-2 px-3 rounded-lg border border-gray-300 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+                                    id="monselect"
+                                    onChange={horaireChange}
+                                >
+                                    <option value="">--Veuillez choisir une tranche horaire !--</option>
+                                    <option value="h1">H1 (8:00-10:00)</option>
+                                    <option value="h2">H2 (10:00-12:00)</option>
+                                    <option value="h3">H3 (13:00-15:00)</option>
+                                    <option value="h4">H4 (15:00-17:00)</option>
+                                    <option value="journee">Journée</option>
+                                </select>
 
                                 <div className="mb-2 text-sm font-medium text-gray-500 uppercase tracking-wide pt-5">
                                     Étage

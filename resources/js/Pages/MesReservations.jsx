@@ -28,7 +28,19 @@ export default function MesReservations(props) {
                                         Reservation Id
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Créneaux horaire
+                                        H1
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                       H2
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        H3
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        H4
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Journee
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Date
@@ -57,7 +69,19 @@ export default function MesReservations(props) {
                                             {reservation.idreservation}
                                         </th>
                                         <td class="px-6 py-4">
-                                        {reservation.matin && reservation.apresmidi ? "Journée" : reservation.matin ? "Matin" : "Après-midi"}
+                                        {reservation.h1}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                        {reservation.h2}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                        {reservation.h3}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                        {reservation.h4}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                        {reservation.journee}
                                         </td>
                                         <td class="px-6 py-4">
                                         {new Date(reservation.date).toLocaleString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
