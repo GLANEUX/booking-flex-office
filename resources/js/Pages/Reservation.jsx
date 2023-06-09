@@ -7,6 +7,7 @@ import Place from "@/components/Place";
 import ReservationLayout from "@/Layouts/ReservationLayout";
 import { Inertia } from "@inertiajs/inertia";
 
+
 export default function Reservation(props) {
     // permet d'accéder aux propriétés envoyées à la page du côté
     // serveur depuis le côté client en utilisant le hook React usePage()
@@ -22,16 +23,18 @@ export default function Reservation(props) {
     const [etagerecup, setEtagerecup] = useState("1");
     const [placerecup, setPlaceRecup] = useState("");
     const [selectedPlaceId, setSelectedPlaceId] = useState(null);
-
+    
     // permet de définir les données du formulaire
     // et de les initialiser avec des valeurs par défaut
     const [data, setData] = useState({
         date: new Date().toISOString().substring(0, 10),
-        h1:'',
-        h2: '',
-        h3: '',
-        h4: '',
-        journee: '',
+        h1: false,
+        h2: false,
+        h3: false,
+        h4: false,
+        matin: false,
+        apresMidi: false,
+        journee: false,
         id_place: selectedPlaceId,
     });
 
@@ -41,9 +44,19 @@ export default function Reservation(props) {
         setHoraireRecup(choice);
         setHoraire(event.target.value);
         console.log(event.target.value);
+        setData((prevState) => ({
+            ...prevState,
+            h1: choice === 'h1',
+            h2: choice === 'h2',
+            h3: choice === 'h3',
+            h4: choice === 'h4',
+            matin: choice === 'matin',
+            apresMidi: choice === 'apresMidi',
+            journee: choice === 'journee',
+          }));
     };
 
-
+    const etages = Array.from(new Set(places.map(place => place.numetage)));
     // permet de gérer le changement de l'étage
     const etageChange = (event) => {
         {
@@ -64,14 +77,11 @@ export default function Reservation(props) {
     // méthode prevState pour maintenir les anciennes valeurs de données
     // inchangées et mettre à jour seulement la valeur qui a été modifiée.
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setData((prevState) => ({
+        const { name, value, type,checked} = e.target;
+        setData((prevState) => ({   
             ...prevState,
+            [name]: type === "radio" ? checked : value,
             id_place: selectedPlaceId,
-            h1: value,
-            h2: value,
-            h3: value,
-            h4: value,
         }));
     };
 
@@ -121,18 +131,152 @@ export default function Reservation(props) {
                                 <div className="mb-2 text-sm font-medium text-gray-500 uppercase tracking-wide pt-5">
                                     Horaires
                                 </div>
-                                <select
-                                    className="w-full py-2 px-3 rounded-lg border border-gray-300 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
-                                    id="monselect"
-                                    onChange={horaireChange}
-                                >
-                                    <option value="">--Veuillez choisir une tranche horaire !--</option>
-                                    <option value="h1">H1 (8:00-10:00)</option>
-                                    <option value="h2">H2 (10:00-12:00)</option>
-                                    <option value="h3">H3 (13:00-15:00)</option>
-                                    <option value="h4">H4 (15:00-17:00)</option>
-                                    <option value="journee">Journée</option>
-                                </select>
+                                <ul class="items-center w-full text-sm font-medium text-red-900 bg-white border border-gray-200 rounded-lg sm:flex">
+                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3">
+                                            <input
+                                                name="horaire"
+                                                id="h1"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="h1"
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                H1 (08:00 - 10:00)
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3">
+                                            <input
+                                                name="horaire"
+                                                id="h2"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="h2"
+                                                checked={data.h2}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="apresmidi"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                H2 (10:00 - 12:00)
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="items-center w-full text-sm font-medium text-red-900 bg-white border border-gray-200 rounded-lg sm:flex">
+                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3">
+                                            <input
+                                                name="horaire"
+                                                id="h3"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="h3"
+                                                checked={data.h3}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                H3 (13:00 - 15:00)
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div className="flex items-center pl-3">
+                                            <input
+                                                name="horaire"
+                                                id="h4"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="h4"
+                                                checked={data.h4}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                H4 (15:00 - 17:00)
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="items-center w-full text-sm font-medium text-red-900 bg-white border border-gray-200 rounded-lg sm:flex">
+                                <li class="w-full  border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3 justify-center">
+                                            <input
+                                                name="horaire"
+                                                id="matin"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="matin"
+                                                checked={data.matin}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                matin
+                                            </label>
+                                        </div>
+                                    </li>
+                                <li class="w-full  border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3 justify-center">
+                                            <input
+                                                name="horaire"
+                                                id="apresMidi"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="apresMidi"
+                                                checked={data.apresMidi}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                Apresmidi
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="w-full  border-b border-gray-200 sm:border-b-0 sm:border-r ">
+                                        <div class="flex items-center pl-3 justify-center">
+                                            <input
+                                                name="horaire"
+                                                id="journee"
+                                                type="radio"
+                                                onChange={handleChange}
+                                                onClick={horaireChange}
+                                                value="journee"
+                                                checked={data.journee}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
+                                            />
+                                            <label
+                                                for="horaire"
+                                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900"
+                                            >
+                                                Journee
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+
 
                                 <div className="mb-2 text-sm font-medium text-gray-500 uppercase tracking-wide pt-5">
                                     Étage
@@ -142,9 +286,11 @@ export default function Reservation(props) {
                                     id="monselect"
                                     onChange={etageChange}
                                 >
-                                    <option value="1">Étage 1</option>
-                                    <option value="2">Étage 2</option>
-                                    <option value="3">Étage 3</option>
+                                    {etages.map((etage) => (
+                                        <option value={etage.id} key={etage.id}>
+                                            {etage}
+                                        </option>
+                                    ))}
                                 </select>
                                 <button className="w-full text-center py-2 mt-4 bg-black text-white rounded-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75">
                                     Réserver
@@ -194,17 +340,7 @@ export default function Reservation(props) {
                                                             reservations.some(
                                                                 (reservation) =>
                                                                     (reservation.id_place ===
-                                                                        place.idplace &&
-                                                                        horaire ==
-                                                                            "matin" &&
-                                                                        place.matin ==
-                                                                            true) ||
-                                                                    (reservation.id_place ===
-                                                                        place.idplace &&
-                                                                        horaire ==
-                                                                            "apresmidi" &&
-                                                                        place.apresMidi ==
-                                                                            true)
+                                                                        place.idplace )
                                                             )
                                                                 ? "grey"
                                                                 : ""

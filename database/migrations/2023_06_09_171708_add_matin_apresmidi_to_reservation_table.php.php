@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reservation', function (Blueprint $table) {
-            $table->dropColumn(['matin', 'apresMidi']);
+            $table->boolean('matin');
+            $table->boolean('apresMidi');
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
+        
         Schema::table('reservation', function (Blueprint $table) {
-            $table->boolean(['matin', 'apresMidi']);
+            $table->dropColumn(['matin', 'apresMidi']);
         });
     }
 };
