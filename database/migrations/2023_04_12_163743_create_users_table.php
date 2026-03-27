@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('username', 50)->nullable();
             $table->string('fonction', 50)->nullable();
             $table->string('roles', 255)->nullable();
+            $table->integer('roleid')->nullable();
             $table->string('email', 50)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 150)->nullable();

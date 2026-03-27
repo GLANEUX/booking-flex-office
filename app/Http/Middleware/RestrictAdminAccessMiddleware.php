@@ -22,7 +22,7 @@ class RestrictAdminAccessMiddleware
         // Si l'utilisateur actuellement connecté a le rôle d'administrateur
         $user = Auth::user();
         if ($user && $user->role && $user->role->role_name === 'admin') {
-            abort(404);
+            return redirect()->route('admin.dashboard');
         }
         return $next($request);
     }

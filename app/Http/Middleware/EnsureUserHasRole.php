@@ -22,6 +22,6 @@ class EnsureUserHasRole
         return $next($request);
 
         
-        abort(404);
+        abort(403, 'Accès réservé aux administrateurs.');
     }
 }

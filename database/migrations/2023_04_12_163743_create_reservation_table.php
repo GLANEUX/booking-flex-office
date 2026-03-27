@@ -14,11 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reservation', function (Blueprint $table) {
-            $table->comment('');
             $table->integer('idreservation', true);
-            $table->time('heuredebut');
-            $table->time('heurefin');
+            $table->boolean('h1')->default(0);
+            $table->boolean('h2')->default(0);
+            $table->boolean('h3')->default(0);
+            $table->boolean('h4')->default(0);
+            $table->boolean('matin')->default(0);
+            $table->boolean('apresmidi')->default(0);
+            $table->boolean('journee')->default(0);
             $table->date('date');
+            $table->timestamp('cree_le')->nullable();
             $table->integer('id_user')->index('reservation_user_fk');
             $table->integer('id_place')->index('reservation_place_fk');
         });

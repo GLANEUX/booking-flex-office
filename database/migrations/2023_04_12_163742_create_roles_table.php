@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('place', function (Blueprint $table) {
-            $table->integer('idplace', true);
-            $table->integer('numplace');
-            $table->timestamp('created_at')->nullable();
+        Schema::create('roles', function (Blueprint $table) {
+            $table->integer('role_id', true);
+            $table->string('role_name');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('place');
+        Schema::dropIfExists('roles');
     }
 };
